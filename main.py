@@ -1,6 +1,7 @@
 from tkinter import *
 import shutil
 import os
+import time
 import easygui
 from tkinter import filedialog
 from tkinter import messagebox as mb
@@ -12,8 +13,6 @@ def open_window():
     return read
 
     # функция открытия файла
-
-
 def open_file():
     string = open_window()
     try:
@@ -22,8 +21,6 @@ def open_file():
         mb.showinfo("Подтвердить", "Файл не найден!")
 
     # функция копирования файла
-
-
 def copy_file():
     source1 = open_window()
     destination1 = filedialog.askdirectory()
@@ -31,8 +28,6 @@ def copy_file():
     mb.showinfo("Подтвердить", "Файл скопирован!")
 
     # функция удаления файла
-
-
 def delete_file():
     del_file = open_window()
     if os.path.exists(del_file):
@@ -41,8 +36,6 @@ def delete_file():
         mb.showinfo("Подтвердить", "Файл не найден!")
 
     # функция переименования
-
-
 def rename_file():
     chosenFile = open_window()
     path1 = os.path.dirname(chosenFile)
@@ -55,8 +48,6 @@ def rename_file():
     mb.showinfo("Подтверждение", "Файл переименован!")
 
     # функция перемещения файла
-
-
 def move_file():
     source = open_window()
     destination = filedialog.askdirectory()
@@ -67,8 +58,6 @@ def move_file():
         mb.showinfo("Подтверждение", "Файл перемещен!")
 
     # функция создания новой папки
-
-
 def make_folder():
     newFolderPath = filedialog.askdirectory()
     print("Введите имя новой папки")
@@ -81,7 +70,6 @@ def make_folder():
 
     # функция удаления папки
 
-
 def remove_folder():
     delFolder = filedialog.askdirectory()
     os.rmdir(delFolder)
@@ -89,9 +77,8 @@ def remove_folder():
 
     # функция для вывода списка всех файлов в папке
 
-
 def list_files():
-    folderList = filedialog.askdirectory()
+    folderList = filedialog.askopenfile()
     sortlist = sorted(os.listdir(folderList))
     i = 0
     print("Файлы в", folderList, "папке:")
@@ -99,11 +86,39 @@ def list_files():
         print(sortlist[i] + '\n')
         i += 1
 
+def info_file():
+    path_file = filedialog.askopenfilename()
+    checkfile = os.path.isfile(path_file)
+    if checkfile:
+        print("Файл")
+        file = open(path_file, "r")
+        read = file.read()
+        file.close()
+        print(read)
+    else:
+        print("Не файл")
+
+def date_file():
+    date_file = filedialog.askopenfilename()
+    date = os.path.getctime(date_file)
+    print(time.ctime(date))
+
+def date_folder():
+    date_folder = filedialog.askdirectory()
+    date = os.path.getctime(date_folder)
+    print(time.ctime(date))
+
+
+
 
 root = Tk()
-# метка и кнопки для выполнения операций
+# # метка и кнопки для выполнения операций
 Label(root, text="Artems's filemanager", font=("Helvetica", 16), fg="blue").grid(row=5, column=2)
 
+
+Button(root, text="Дата папки", command = date_folder).grid(row=1, column=2)
+Button(root, text="Дата файла", command = date_file).grid(row=5, column=2)
+Button(root, text="Содержимое файла", command = info_file).grid(row=10, column=2)
 Button(root, text="Открыть файл", command=open_file).grid(row=15, column=2)
 Button(root, text="Скопировать файл", command=copy_file).grid(row=25, column=2)
 Button(root, text="Удалить файл", command=delete_file).grid(row=35, column=2)
@@ -113,3 +128,6 @@ Button(root, text="Создать папку", command=make_folder).grid(row=75,
 Button(root, text="Удалить папку", command=remove_folder).grid(row=65, column=2)
 Button(root, text="Список всех файлов в каталоге", command=list_files).grid(row=85, column=2)
 root.mainloop()
+
+
+
