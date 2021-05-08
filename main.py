@@ -126,9 +126,8 @@ def save_file():
     f.write(input())
     print('Готово')
 
-
+#окно
 window = Tk()
-# # метка и кнопки для выполнения операций
 Label(font=("Helvetica", 16), fg="blue").grid(row=5, column=2)
 window.title("Добро пожаловать")
 window.geometry('400x400')
