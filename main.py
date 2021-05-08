@@ -6,8 +6,21 @@ import easygui
 from tkinter import filedialog
 from tkinter import messagebox as mb
 
+import http.server
+import socketserver
 
-# отрыть окно файла при выборе файла
+# PORT = 8000
+#
+# handler = http.server.SimpleHTTPRequestHandler
+#
+# with socketserver.TCPServer(("", PORT), handler) as httpd:
+#     print("Server started at localhost:" + str(PORT))
+#     httpd.serve_forever()
+
+
+
+
+    # отрыть окно файла при выборе файла
 def open_window():
     read = easygui.fileopenbox()
     return read
@@ -61,22 +74,18 @@ def move_file():
 def make_folder():
     newFolderPath = filedialog.askdirectory()
     print("Введите имя новой папки")
-
     newFolder = input()
     path = os.path.join(newFolderPath, newFolder)
-
     os.mkdir(path)
     mb.showinfo("Подтверждение", "Папка создана!")
 
     # функция удаления папки
-
 def remove_folder():
     delFolder = filedialog.askdirectory()
     os.rmdir(delFolder)
     mb.showinfo("Подтверждение", "Папка удалена!")
 
     # функция для вывода списка всех файлов в папке
-
 def list_files():
     folderList = filedialog.askopenfile()
     sortlist = sorted(os.listdir(folderList))
@@ -98,36 +107,43 @@ def info_file():
     else:
         print("Не файл")
 
+    #функция даты файла
 def date_file():
     date_file = filedialog.askopenfilename()
     date = os.path.getctime(date_file)
     print(time.ctime(date))
 
+    # функция даты папки
 def date_folder():
     date_folder = filedialog.askdirectory()
     date = os.path.getctime(date_folder)
     print(time.ctime(date))
 
+    # функция сохранения данных в файле
+def save_file():
+    save_file = filedialog.askopenfilename()
+    f = open(save_file, 'w')
+    f.write(input())
+    print('Готово')
 
 
-
-root = Tk()
+window = Tk()
 # # метка и кнопки для выполнения операций
-Label(root, text="Artems's filemanager", font=("Helvetica", 16), fg="blue").grid(row=5, column=2)
+Label(font=("Helvetica", 16), fg="blue").grid(row=5, column=2)
+window.title("Добро пожаловать")
+window.geometry('400x400')
 
+Button(window, text="Дата папки", command=date_folder).grid(row=1, column=2)
+Button(window, text="Дата файла", command=date_file).grid(row=5, column=2)
+Button(window, text="Содержимое файла", command=info_file).grid(row=10, column=2)
+Button(window, text="Открыть файл", command=open_file).grid(row=15, column=2)
+Button(window, text="Скопировать файл", command=copy_file).grid(row=25, column=2)
+Button(window, text="Удалить файл", command=delete_file).grid(row=35, column=2)
+Button(window, text="Переименовать файл", command=rename_file).grid(row=45, column=2)
+Button(window, text="Переместить файл", command=move_file).grid(row=55, column=2)
+Button(window, text="Создать папку", command=make_folder).grid(row=75, column=2)
+Button(window, text="Удалить папку", command=remove_folder).grid(row=65, column=2)
+Button(window, text="Список всех файлов в каталоге", command=list_files).grid(row=75, column=2)
+Button(window, text="Сохранить данные в файле", command=save_file).grid(row=85, column=2)
 
-Button(root, text="Дата папки", command = date_folder).grid(row=1, column=2)
-Button(root, text="Дата файла", command = date_file).grid(row=5, column=2)
-Button(root, text="Содержимое файла", command = info_file).grid(row=10, column=2)
-Button(root, text="Открыть файл", command=open_file).grid(row=15, column=2)
-Button(root, text="Скопировать файл", command=copy_file).grid(row=25, column=2)
-Button(root, text="Удалить файл", command=delete_file).grid(row=35, column=2)
-Button(root, text="Переименовать файл", command=rename_file).grid(row=45, column=2)
-Button(root, text="Переместить файл", command=move_file).grid(row=55, column=2)
-Button(root, text="Создать папку", command=make_folder).grid(row=75, column=2)
-Button(root, text="Удалить папку", command=remove_folder).grid(row=65, column=2)
-Button(root, text="Список всех файлов в каталоге", command=list_files).grid(row=85, column=2)
-root.mainloop()
-
-
-
+window.mainloop()
